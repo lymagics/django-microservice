@@ -49,3 +49,16 @@ def post_update(
         post = uow.posts.update(post_id, **data)
         uow.commit()
     return post
+
+
+def post_delete(
+    post_id: UUID,
+    uow: unit_of_work.AbstractUnitOfWork,
+):
+    with uow:
+        post = uow.posts.get(post_id)
+        if post is None:
+            error = 'Post not found.'
+            raise PostNotFound(error)
+        uow.posts.delete(post_id)
+        uow.commit()
