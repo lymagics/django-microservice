@@ -33,7 +33,7 @@ class DjangoRepository(AbstractRepository):
     Django implementation of repository pattern.
     """
     def add(self, post: model.Post):
-        new_post = django_models.Post(**post.dict())
+        new_post = django_models.Post(text=post.text, author=post.author)
         new_post.save()
         return model.Post(**new_post.dict(), post_=new_post)
     
