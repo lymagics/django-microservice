@@ -1,0 +1,181 @@
+openapi: 3.0.3
+
+info:
+  title: Posts API
+  description: API to interact with Posts Service
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+  - url: https://mcposts.com
+    description: Main production server
+
+paths:
+  /posts:
+    get:
+      summary: Retrieves list of posts
+      operationId: postList
+      parameters:
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PostOut'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  
+    post:
+      summary: Creates a post
+      operationId: postCreate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostIn'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOut'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+
+  /posts/{post_id}:
+    parameters:
+      - in: path
+        name: post_id
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      summary: Retrieves specific post information
+      operationId: postGet
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOut'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+    
+    put:
+      summary: Updates specific post information
+      operationId: postUpdate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostUpdate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostOut'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+
+    delete:
+      summary: Deletes specific post
+      operationId: postDelete
+      responses:
+        '204':
+          description: The resource was deleted successfully
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+  responses:
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnprocessableEntity:
+      description: The payload contains invalid values
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        detail:
+          oneOf:
+            - type: array
+            - type: string
+      required:
+        - detail
+      additionalProperties: false
+
+    Post:
+      type: object
+      properties:
+        text:
+          type: string
+        author:
+          type: string
+          additionalProperties: false
+
+    PostIn:
+      allOf:
+        - $ref: '#/components/schemas/Post'
+        - type: object
+          required:
+            - text
+            - author
+
+    PostOut:
+      allOf:
+        - $ref: '#/components/schemas/Post'
+        - type: object
+          required:
+            - id
+            - text
+            - author
+            - created_at
+            - updated_at
+          properties:
+            id:
+              type: string
+              format: uuid
+            created_at:
+              type: string
+              format: date-time
+            updated_at:
+              type: string
+              format: datet-time
+
+    PostUpdate:
+      allOf:
+        - $ref: '#/components/schemas/Post'
