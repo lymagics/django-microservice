@@ -34,3 +34,18 @@ def post_list(
 ) -> list[model.Post]:
     with uow:
         return uow.posts.list(limit, offset)
+
+
+def post_update(
+    post_id: UUID,
+    data: dict,
+    uow: unit_of_work.AbstractUnitOfWork,
+) -> model.Post:
+    with uow:
+        post = uow.posts.get(post_id)
+        if post is None:
+            error = 'Post not found.'
+            raise PostNotFound(error)
+        post = uow.posts.update(post_id, **data)
+        uow.commit()
+    return post
