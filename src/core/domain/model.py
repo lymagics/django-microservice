@@ -5,11 +5,11 @@ from uuid import UUID
 class Post:
     def __init__(
         self,
-        id: UUID,
         text: str,
         author: str,
-        created_at: datetime,
-        updated_at: datetime,
+        id: UUID=None,
+        created_at: datetime=None,
+        updated_at: datetime=None,
         post_=None,
     ):
         self._id = id
