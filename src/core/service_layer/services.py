@@ -25,3 +25,12 @@ def post_get(
         error = 'Post not found.'
         raise PostNotFound(error)
     return post
+
+
+def post_list(
+    limit: int,
+    offset: int,
+    uow: unit_of_work.AbstractUnitOfWork,
+) -> list[model.Post]:
+    with uow:
+        return uow.posts.list(limit, offset)
