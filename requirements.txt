@@ -1,3 +1,4 @@
 Django==4.2.6
 environs[django]==9.5.0
 django-ninja==0.22.2
+PyYAML==6.0.1
