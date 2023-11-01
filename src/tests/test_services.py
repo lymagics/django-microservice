@@ -31,3 +31,10 @@ class TestServices(SimpleTestCase):
         uow = FakeUnitOfWork()
         with self.assertRaises(PostNotFound):
             services.post_get(uuid4(), uow)
+
+    def test_post_list(self):
+        uow = FakeUnitOfWork()
+        post = uow.posts.add(model.Post(uuid4(), 'text', 'author'))
+        posts = services.post_list(0, 1, uow)
+        self.assertEqual(1, len(posts))
+        self.assertIn(post, posts)
