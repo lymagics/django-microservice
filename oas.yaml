@@ -6,9 +6,9 @@ info:
   version: 1.0.0
 
 servers:
-  - url: http://localhost:8000
+  - url: http://localhost:8000/api
     description: Local development server
-  - url: https://mcposts.com
+  - url: https://mcposts.com/api
     description: Main production server
 
 paths:
