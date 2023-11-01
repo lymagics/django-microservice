@@ -1,6 +1,8 @@
 from pathlib import Path
 from uuid import UUID
 
+from django.http import HttpRequest
+
 import yaml
 from ninja import NinjaAPI
 
@@ -16,7 +18,7 @@ api.get_openapi_schema = lambda: oas_docs
 
 
 @api.post('/posts', response=schemas.PostOut)
-def post_create(request, data: schemas.PostIn):
+def post_create(request: HttpRequest, data: schemas.PostIn):
     return services.post_create(
         data.text, data.author,
         unit_of_work.DjangoUnitOfWork(),
@@ -24,7 +26,9 @@ def post_create(request, data: schemas.PostIn):
 
 
 @api.get('/posts', response=list[schemas.PostOut])
-def post_list(request, limit: int = 10, offset: int = 0):
+def post_list(
+    request: HttpRequest, limit: int = 10, offset: int = 0,
+):
     return services.post_list(
         limit, offset,
         unit_of_work.DjangoUnitOfWork(),
@@ -35,7 +39,7 @@ def post_list(request, limit: int = 10, offset: int = 0):
     '/posts/{post_id}',
     response={200: schemas.PostOut, 404: schemas.Error}
 )
-def post_get(request, post_id: UUID):
+def post_get(request: HttpRequest, post_id: UUID):
     try:
         return services.post_get(
             post_id, unit_of_work.DjangoUnitOfWork(),
@@ -49,7 +53,9 @@ def post_get(request, post_id: UUID):
     '/posts/{post_id}',
     response={200: schemas.PostOut, 404: schemas.Error}
 )
-def post_update(request, post_id: UUID, data: schemas.PostUpdate):
+def post_update(
+    request: HttpRequest, post_id: UUID, data: schemas.PostUpdate,
+):
     try:
         return services.post_update(
             post_id, data.dict(exclude_unset=True),
@@ -64,7 +70,7 @@ def post_update(request, post_id: UUID, data: schemas.PostUpdate):
     '/posts/{post_id}',
     response={204: None, 404: schemas.Error}
 )
-def post_update(request, post_id: UUID):
+def post_update(request: HttpRequest, post_id: UUID):
     try:
         services.post_delete(
             post_id, unit_of_work.DjangoUnitOfWork(),
