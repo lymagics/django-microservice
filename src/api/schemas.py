@@ -1,10 +1,10 @@
 from datetime import datetime
 from uuid import UUID
 
-from pydantic import BaseModel
+from ninja import Schema
 
 
-class Post(BaseModel):
+class Post(Schema):
     text: str
     author: str
 
