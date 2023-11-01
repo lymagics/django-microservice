@@ -19,3 +19,11 @@ def post_create(request, data: schemas.PostIn):
         data.text, data.author,
         unit_of_work.DjangoUnitOfWork(),
     )
+
+
+@api.get('/posts', response=list[schemas.PostOut])
+def post_list(request, limit: int = 10, offset: int = 0):
+    return services.post_list(
+        limit, offset,
+        unit_of_work.DjangoUnitOfWork(),
+    )
