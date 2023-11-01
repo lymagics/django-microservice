@@ -1,4 +1,5 @@
 from uuid import UUID
+
 from core.adapters import repository
 from core.domain import model
 from core.service_layer import unit_of_work
