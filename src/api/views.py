@@ -43,3 +43,18 @@ def post_get(request, post_id: UUID):
     except PostNotFound as e:
         detail = {'detail': str(e)}
         return 404, detail
+
+
+@api.put(
+    '/posts/{post_id}',
+    response={200: schemas.PostOut, 404: schemas.Error}
+)
+def post_update(request, post_id: UUID, data: schemas.PostUpdate):
+    try:
+        return services.post_update(
+            post_id, data.dict(exclude_unset=True),
+            unit_of_work.DjangoUnitOfWork(),
+        )
+    except PostNotFound as e:
+        detail = {'detail': str(e)}
+        return 404, detail
