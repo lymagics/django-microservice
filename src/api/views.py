@@ -70,7 +70,7 @@ def post_update(
     '/posts/{post_id}',
     response={204: None, 404: schemas.Error}
 )
-def post_update(request: HttpRequest, post_id: UUID):
+def post_delete(request: HttpRequest, post_id: UUID):
     try:
         services.post_delete(
             post_id, unit_of_work.DjangoUnitOfWork(),
