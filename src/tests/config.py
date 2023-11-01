@@ -6,7 +6,7 @@ from core.service_layer import unit_of_work
 
 class FakeRepository(repository.AbstractRepository):
     """
-    In memory implementation of repository pattern.
+    Fake implementation of repository pattern.
     """
     def __init__(self, posts):
         self._posts = set(posts)
