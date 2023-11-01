@@ -1,5 +1,6 @@
 from datetime import datetime
 from uuid import UUID
+from typing import Optional
 
 from ninja import Schema
 
@@ -20,7 +21,8 @@ class PostOut(Post):
 
 
 class PostUpdate(Post):
-    pass
+    text: Optional[str]
+    author: Optional[str]
 
 
 class Error(Schema):
