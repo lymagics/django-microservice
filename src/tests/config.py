@@ -11,7 +11,7 @@ class FakeRepository(repository.AbstractRepository):
     def __init__(self, posts):
         self._posts = set(posts)
 
-    def add(self, post: model.Post):
+    def add(self, post: model.Post) -> model.Post:
         self._posts.add(post)
         return post
 
