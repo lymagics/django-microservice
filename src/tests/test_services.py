@@ -45,3 +45,10 @@ class TestServices(SimpleTestCase):
         post = services.post_update(new_post.id, {'text': 'abc'}, uow)
         self.assertEqual(post.id, new_post.id)
         self.assertEqual(post.text, new_post.text)
+
+    def test_post_delete(self):
+        uow = FakeUnitOfWork()
+        new_post = uow.posts.add(model.Post(uuid4(), 'text', 'author'))
+        services.post_delete(new_post.id, uow)
+        post = uow.posts.get(new_post.id)
+        self.assertIsNone(post)
