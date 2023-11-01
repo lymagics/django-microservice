@@ -19,11 +19,11 @@ class FakeRepository(repository.AbstractRepository):
         for post in self._posts:
             if post.id == post_id:
                 return post
-    
+
     def list(self, limit: int, offset: int) -> list[model.Post]:
         query_set = list(self._posts)
         return query_set[limit:limit+offset]
-    
+
     def update(self, post_id: UUID, **payload) -> model.Post:
         post = self._get(post_id)
         for key, value in payload.items():

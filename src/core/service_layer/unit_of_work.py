@@ -12,13 +12,13 @@ class AbstractUnitOfWork(abc.ABC):
 
     def __enter__(self):
         return self
-    
+
     def __exit__(self, *args):
         self.rollback()
 
     def commit(self):
         raise NotImplementedError
-    
+
     def rollback(self):
         raise NotImplementedError
 
@@ -31,7 +31,7 @@ class DjangoUnitOfWork(AbstractUnitOfWork):
         self.posts = repository.DjangoRepository()
         transaction.set_autocommit(False)
         return super().__enter__()
-    
+
     def __exit__(self, *args):
         super().__exit__()
         transaction.set_autocommit(True)

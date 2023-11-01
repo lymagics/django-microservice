@@ -16,7 +16,7 @@ def post_create(
 
 
 def post_get(
-    post_id: UUID, 
+    post_id: UUID,
     uow: unit_of_work.AbstractUnitOfWork,
 ) -> model.Post:
     with uow:

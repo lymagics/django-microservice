@@ -16,16 +16,16 @@ class AbstractRepository(abc.ABC):
         post = self._get(post_id)
         if post is not None:
             return model.Post(**post.dict())
-    
+
     def _get(self, post_id: UUID):
         raise NotImplementedError
 
     def list(self, limit: int, offset: int) -> list[model.Post]:
         raise NotImplementedError
-    
+
     def update(self, post_id: UUID, **payload) -> model.Post:
         raise NotImplementedError
-    
+
     def delete(self, post_id: UUID):
         raise NotImplementedError
 
@@ -38,7 +38,7 @@ class DjangoRepository(AbstractRepository):
         new_post = django_models.Post(**post.dict())
         new_post.save()
         return model.Post(**new_post.dict(), post_=new_post)
-    
+
     def _get(self, post_id: UUID) -> django_models.Post:
         return django_models.Post.objects.filter(id=post_id).first()
 

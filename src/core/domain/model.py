@@ -8,8 +8,8 @@ class Post:
         id: UUID,
         text: str,
         author: str,
-        created_at: datetime=None,
-        updated_at: datetime=None,
+        created_at: datetime = None,
+        updated_at: datetime = None,
         post_=None,
     ):
         self._id = id
