@@ -22,7 +22,7 @@ class FakeRepository(repository.AbstractRepository):
 
     def list(self, limit: int, offset: int) -> list[model.Post]:
         query_set = list(self._posts)
-        return query_set[limit:limit+offset]
+        return query_set[offset:limit+offset]
 
     def update(self, post_id: UUID, **payload) -> model.Post:
         post = self._get(post_id)
