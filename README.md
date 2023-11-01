@@ -1,1 +1,1 @@
-# Posts microservice written in django
+# Django microservice example
