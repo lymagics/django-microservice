@@ -21,3 +21,7 @@ class PostOut(Post):
 
 class PostUpdate(Post):
     pass
+
+
+class Error(Schema):
+    detail: str | list[str]
