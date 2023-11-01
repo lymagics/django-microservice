@@ -5,9 +5,9 @@ from uuid import UUID
 class Post:
     def __init__(
         self,
+        id: UUID,
         text: str,
         author: str,
-        id: UUID=None,
         created_at: datetime=None,
         updated_at: datetime=None,
         post_=None,
@@ -21,16 +21,22 @@ class Post:
 
     @property
     def id(self) -> UUID:
-        return self._id or self._post.id
-    
+        if self._post is not None:
+            return self._post.id
+        return self._id
+
     @property
     def created_at(self) -> datetime:
-        return self._created_at or self._post.created_at
-    
+        if self._post is not None:
+            return self._post.created_at
+        return self._created_at
+
     @property
     def updated_at(self) -> datetime:
-        return self._updated_at or self._post.updated_at
-    
+        if self._post is not None:
+            return self._post.updated_at
+        return self._updated_at
+
     def dict(self) -> dict:
         return {
             'id': self.id,

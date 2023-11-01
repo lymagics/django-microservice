@@ -10,7 +10,7 @@ def post_create(
     uow: unit_of_work.AbstractUnitOfWork,
 ) -> model.Post:
     with uow:
-        post = uow.posts.add(model.Post(text, auhtor))
+        post = uow.posts.add(model.Post(None, text, auhtor))
         uow.commit()
     return post
 
