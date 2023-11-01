@@ -58,3 +58,18 @@ def post_update(request, post_id: UUID, data: schemas.PostUpdate):
     except PostNotFound as e:
         detail = {'detail': str(e)}
         return 404, detail
+
+
+@api.delete(
+    '/posts/{post_id}',
+    response={204: None, 404: schemas.Error}
+)
+def post_update(request, post_id: UUID):
+    try:
+        services.post_delete(
+            post_id, unit_of_work.DjangoUnitOfWork(),
+        )
+        return 204, {}
+    except PostNotFound as e:
+        detail = {'detail': str(e)}
+        return 404, detail
