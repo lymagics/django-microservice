@@ -13,6 +13,7 @@ class FakeRepository(repository.AbstractRepository):
 
     def add(self, post: model.Post):
         self._posts.add(post)
+        return post
 
     def _get(self, post_id: UUID) -> model.Post:
         for post in self._posts:
@@ -27,6 +28,7 @@ class FakeRepository(repository.AbstractRepository):
         post = self._get(post_id)
         for key, value in payload.items():
             setattr(post, key, value)
+        return post
 
     def delete(self, post_id: UUID):
         post = self._get(post_id)
