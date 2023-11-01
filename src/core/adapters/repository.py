@@ -11,9 +11,11 @@ class AbstractRepository(abc.ABC):
     """
     def add(self, post: model.Post):
         raise NotImplementedError
-    
+
     def get(self, post_id: UUID) -> model.Post:
-        raise NotImplementedError
+        post = self._get(post_id)
+        if post is not None:
+            return model.Post(**post.dict())
     
     def _get(self, post_id: UUID):
         raise NotImplementedError
@@ -39,11 +41,6 @@ class DjangoRepository(AbstractRepository):
     
     def _get(self, post_id: UUID) -> django_models.Post:
         return django_models.Post.objects.filter(id=post_id).first()
-
-    def get(self, post_id: UUID) -> model.Post:
-        post = self._get(post_id)
-        if post is not None:
-            return model.Post(**post.dict())
 
     def list(self, limit: int, offset: int) -> list[model.Post]:
         posts = django_models.Post.objects.all()[offset:limit+offset]
