@@ -1,9 +1,11 @@
 from pathlib import Path
+from uuid import UUID
 
 import yaml
 from ninja import NinjaAPI
 
 from api import schemas
+from core.errors import PostNotFound
 from core.service_layer import services, unit_of_work
 
 api = NinjaAPI()
@@ -27,3 +29,17 @@ def post_list(request, limit: int = 10, offset: int = 0):
         limit, offset,
         unit_of_work.DjangoUnitOfWork(),
     )
+
+
+@api.get(
+    '/posts/{post_id}',
+    response={200: schemas.PostOut, 404: schemas.Error}
+)
+def post_get(request, post_id: UUID):
+    try:
+        return services.post_get(
+            post_id, unit_of_work.DjangoUnitOfWork(),
+        )
+    except PostNotFound as e:
+        detail = {'detail': str(e)}
+        return 404, detail
